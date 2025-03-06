@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { ModeToggel } from "../ModeToggel";
+import {RegisterLink, LoginLink,LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { Button } from "../ui/button";
+
+
+ 
 
 
 export function Navbar() {
-  
+   const { getUser } = useKindeBrowserClient();
+  const user = getUser();
 
   return (
     <nav className="py-5 flex items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,7 +41,22 @@ export function Navbar() {
       </div>
 
      
-          <Button>Login</Button>
+     
+      {user ? (
+        <div className="flex items-center gap-4">
+          <p>{user.given_name}</p>
+          <LogoutLink>
+            <Button>Logout</Button>
+          </LogoutLink>
+        </div>
+      ) : (
+        <div className="flex items-center gap-4">
+          <LoginLink >Login</LoginLink>
+          <RegisterLink >
+            Sign up
+          </RegisterLink>
+        </div>
+      )}
         
       
        
